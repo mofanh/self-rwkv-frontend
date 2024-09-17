@@ -1,16 +1,25 @@
 // 运行时配置
-import { RunTimeLayoutConfig, RequestConfig, RuntimeAntdConfig } from '@umijs/max';
-import { MenuProps, message, theme, Dropdown } from 'antd';
 import { BulbOutlined, LogoutOutlined } from '@ant-design/icons';
+import {
+  RequestConfig,
+  RuntimeAntdConfig,
+  RunTimeLayoutConfig,
+} from '@umijs/max';
+import { Dropdown, MenuProps, message } from 'antd';
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
-export async function getInitialState(): Promise<{ name: string, avatar?: string }> {
-  return { 
+export async function getInitialState(): Promise<{
+  name: string;
+  avatar?: string;
+}> {
+  return {
     name: 'lbj',
-    avatar:'https://p26-passport.byteacctimg.com/img/user-avatar/312989b46037c16843b1eb44aea82fa2~180x180.awebp?', };
+    avatar:
+      'https://p26-passport.byteacctimg.com/img/user-avatar/312989b46037c16843b1eb44aea82fa2~180x180.awebp?',
+  };
 }
 
-export const layout: RunTimeLayoutConfig = ({initialState}) => {
+export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   //initialState上面登录函数返回的信息
   const DropdownItems: MenuProps['items'] = [
     {
@@ -71,14 +80,14 @@ export const antd: RuntimeAntdConfig = (memo) => {
       // colorBgContainer: '#f6ffed',
     },
   };
-  memo.theme.algorithm = theme.darkAlgorithm; // 配置 antd5 的预设 dark 算法
+  // memo.theme.algorithm = theme.darkAlgorithm; // 配置 antd5 的预设 dark 算法
 
   memo.appConfig = {
     message: {
       // 配置 message 最大显示数，超过限制时，最早的消息会被自动关闭
       maxCount: 3,
-    }
-  }
+    },
+  };
 
   return memo;
 };
@@ -86,17 +95,15 @@ export const antd: RuntimeAntdConfig = (memo) => {
 export const request: RequestConfig = {
   timeout: 1000,
   errorConfig: {
-    errorHandler(error: any){
+    errorHandler(error: any) {
       const { response } = error;
       if (response && response.status === 500) {
         message.error('请求错误：服务器故障，请稍后再试');
       }
     },
-    errorThrower(){
-
-    }
+    errorThrower() {},
   },
-  requestInterceptors:[
+  requestInterceptors: [
     (config: any) => {
       let token = localStorage.getItem('token') || '';
       if (token.startsWith('"')) {
@@ -120,5 +127,4 @@ export const request: RequestConfig = {
       return response;
     },
   ],
-
-}
+};
