@@ -1,3 +1,5 @@
+import access from "@/access";
+
 const routes = [
   {
     path: '/',
