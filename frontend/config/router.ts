@@ -30,9 +30,9 @@ const routes = [
     name: 'AI',
     path: '/ai',
     component: './AI',
-    // wrappers: [
-    //   '@/wrappers/auth',
-    // ],
+    wrappers: [
+      '@/wrappers/auth',
+    ],
     routes: [
       {
         name: 'chat',

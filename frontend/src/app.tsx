@@ -5,7 +5,8 @@ import {
   RuntimeAntdConfig,
   RunTimeLayoutConfig,
 } from '@umijs/max';
-import { Dropdown, MenuProps, message } from 'antd';
+import { Dropdown, MenuProps, message, theme } from 'antd';
+import Header from './components/Header';
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState(): Promise<{
@@ -19,18 +20,18 @@ export async function getInitialState(): Promise<{
   };
 }
 
-export const layout: RunTimeLayoutConfig = ({ initialState }) => {
+export const layout: RunTimeLayoutConfig = ({ initialState }: any) => {
   //initialState上面登录函数返回的信息
   const DropdownItems: MenuProps['items'] = [
+    {
+      key: 'profile',
+      icon: <BulbOutlined />,
+      label: '编辑个人',
+    },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
       label: '退出登录',
-    },
-    {
-      key: 'theam',
-      icon: <BulbOutlined />,
-      label: '切换主题',
     },
   ];
   const DropdownOnClick: MenuProps['onClick'] = ({ key }) => {
@@ -62,6 +63,23 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         );
       },
     },
+    headerContentRender: (props, defaultDom) => {
+      return (
+        <>
+          {defaultDom}
+          <Header />
+        </>
+      );
+    },
+    onPageChange: (location) => {
+      const { currentUser } = initialState;
+      console.log('initialState--', initialState);
+      // const { location } = history;
+      // 如果没有登录，重定向到 login
+      // if (!currentUser && location.pathname !== '/login') {
+      //   history.push('/user/login');
+      // }
+    },
     // 自定义 403 页面
     unAccessible: <div>'403 unAccessible'</div>,
     // 自定义 404 页面
@@ -80,7 +98,7 @@ export const antd: RuntimeAntdConfig = (memo) => {
       // colorBgContainer: '#f6ffed',
     },
   };
-  // memo.theme.algorithm = theme.darkAlgorithm; // 配置 antd5 的预设 dark 算法
+  memo.theme.algorithm = theme.defaultAlgorithm; // 配置 antd5 的预设 dark 算法
 
   memo.appConfig = {
     message: {

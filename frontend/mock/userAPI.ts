@@ -11,9 +11,13 @@ export default {
       errorCode: 0,
     });
   },
-  'PUT /api/v1/user/': (req: any, res: any) => {
+  'GET /api/v1/user/': (req: any, res: any) => {
     res.json({
       success: true,
+      data: {
+        role: 'admin',
+        name: 'lbj'
+      },
       errorCode: 0,
     });
   },
