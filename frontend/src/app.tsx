@@ -1,6 +1,7 @@
 // 运行时配置
 import { BulbOutlined, LogoutOutlined } from '@ant-design/icons';
 import {
+  Navigate,
   RequestConfig,
   RuntimeAntdConfig,
   RunTimeLayoutConfig,
@@ -64,6 +65,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }: any) => {
       },
     },
     headerContentRender: (props, defaultDom) => {
+      console.log('props--', props)
       return (
         <>
           {defaultDom}
@@ -74,11 +76,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }: any) => {
     onPageChange: (location) => {
       const { currentUser } = initialState;
       console.log('initialState--', initialState);
-      // const { location } = history;
-      // 如果没有登录，重定向到 login
-      // if (!currentUser && location.pathname !== '/login') {
-      //   history.push('/user/login');
-      // }
     },
     // 自定义 403 页面
     unAccessible: <div>'403 unAccessible'</div>,
