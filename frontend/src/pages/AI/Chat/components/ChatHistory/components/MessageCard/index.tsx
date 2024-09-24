@@ -1,51 +1,73 @@
 import { Button, Card } from 'antd';
 
-const { Meta } = Card;
+interface MessageProps {
+  msg: string;
+  loading?: boolean;
+}
 
-const MessageCard = () => {
+const MessageCard = (props: MessageProps) => {
+  const { msg, loading } = props;
   return (
-    <Card hoverable>
-      <p>
-        这里是动态内容的主体部分...这里是动态内容的主体部分这里是动态内容的主体部分这里是动态内容的主体部分
-      </p>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <span>
-          <Button type="dashed" onClick={handleCopy}>
-            复制
-          </Button>
-          <Button type="dashed" onClick={() => {}}>
-            再试一次
-          </Button>
-          <Button type="dashed" onClick={handleShare}>
-            分享
-          </Button>
-        </span>
-        <span>
-          <Button type="dashed" onClick={handleLike}>
-            点赞
-          </Button>
-          <Button type="dashed" onClick={() => {}}>
-            点踩
-          </Button>
-        </span>
+    <Card
+      hoverable
+      style={{
+        width: 'fit-content', // 让宽度适应内容
+      }}
+    >
+      <p>{msg}</p>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        {loading ? (
+          <div>
+            <span>
+              <Button type="dashed" onClick={handleCopy}>
+                复制
+              </Button>
+              <Button type="dashed" onClick={handleRetry}>
+                再试一次
+              </Button>
+              <Button type="dashed" onClick={handleShare}>
+                分享
+              </Button>
+            </span>
+            <span>
+              <Button type="dashed" onClick={handleLike}>
+                点赞
+              </Button>
+              <Button type="dashed" onClick={handleDislike}>
+                点踩
+              </Button>
+            </span>
+          </div>
+        ) : null}
       </div>
     </Card>
   );
 };
 
+// 定义函数
 const handleCopy = () => {
-  // 复制逻辑
   console.log('复制');
 };
 
+const handleRetry = () => {
+  console.log('再试一次');
+};
+
 const handleShare = () => {
-  // 分享逻辑
   console.log('分享');
 };
 
 const handleLike = () => {
-  // 点赞逻辑
   console.log('点赞');
+};
+
+const handleDislike = () => {
+  console.log('点踩');
 };
 
 export default MessageCard;

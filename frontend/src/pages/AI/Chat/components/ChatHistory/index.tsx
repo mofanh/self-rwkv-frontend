@@ -1,15 +1,17 @@
 import { Col, Row } from 'antd';
 import RobotItem from './components/RobotItem';
+import UserItem from './components/UserItem';
 
 const ChatHistory = () => {
+
   return (
     <>
-      <Row>
+      <div>
         <RobotItem />
-      </Row>
-      <Row>
-      <RobotItem />
-      </Row>
+      </div>
+      <div>
+          <UserItem />
+      </div>
     </>
   );
 };

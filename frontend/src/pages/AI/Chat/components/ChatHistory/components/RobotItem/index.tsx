@@ -1,29 +1,18 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Flex, Typography } from 'antd';
+import { Avatar, Flex } from 'antd';
 import MessageCard from '../MessageCard';
-const cardStyle: React.CSSProperties = {
-  width: 620,
-};
-
-const imgStyle: React.CSSProperties = {
-  display: 'block',
-  width: 273,
-};
+import { useState } from 'react';
 
 const RobotItem = () => {
+    const [str, setStr] = useState('asdad');
+    // setInterval(()=>{
+    //     setStr(str+'1');
+    // }, 1000);
   return (
-    <div>
-      <Flex justify="space-between">
-        <Avatar
-          style={{ backgroundColor: '#87d068' }}
-          icon={<UserOutlined />}
-        />
-        <Flex
-        >
-          <MessageCard />
-        </Flex>
-      </Flex>
-    </div>
+    <Flex>
+      <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
+      <MessageCard msg={str} loading={true} />
+    </Flex>
   );
 };
 
