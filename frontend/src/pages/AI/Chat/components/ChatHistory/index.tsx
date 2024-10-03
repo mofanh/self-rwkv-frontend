@@ -1,16 +1,21 @@
 import { Col, Row } from 'antd';
 import RobotItem from './components/RobotItem';
 import UserItem from './components/UserItem';
+import { InputAreaProps } from '../InputArea';
 
-const ChatHistory = () => {
+interface ChatHistoryProps extends InputAreaProps {
+  history: string[];
+}
 
+const ChatHistory = (props: ChatHistoryProps) => {
+  const { curInput, setCurInput, history } = props;
   return (
     <>
       <div>
         <RobotItem />
       </div>
       <div>
-          <UserItem />
+          <UserItem curInput={curInput} />
       </div>
     </>
   );

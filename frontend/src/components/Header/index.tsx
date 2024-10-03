@@ -6,7 +6,6 @@ const Header = () => {
   const { darkAlgorithm, defaultAlgorithm } = theme;
   const setAntdConfig = useAntdConfigSetter();
   const antdConfig = useAntdConfig();
-  console.log('antdConfig--', antdConfig)
   return (
     <Switch
       checkedChildren={<MoonOutlined />}

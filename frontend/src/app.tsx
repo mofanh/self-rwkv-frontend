@@ -1,21 +1,48 @@
 // 运行时配置
 import { BulbOutlined, LogoutOutlined } from '@ant-design/icons';
 import {
-  Navigate,
   RequestConfig,
   RuntimeAntdConfig,
   RunTimeLayoutConfig,
 } from '@umijs/max';
 import { Dropdown, MenuProps, message, theme } from 'antd';
 import Header from './components/Header';
+import { getMe } from './services/user/UserController';
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState(): Promise<{
   name: string;
   avatar?: string;
 }> {
+  if (location.pathname === '/login') {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const user = await getMe();
+      if (user?.data) {
+        message.error('请退出 再登录');
+        history.go(-1);
+      }
+    }
+  } else {
+    const res = await getMe().catch(() => {
+      localStorage.removeItem('token');
+      message.error('用户无效，请先登录');
+      location.href = '/login';
+    });
+
+    if (res?.data) {
+      // 有 token 而且 token 有效
+      const { user } = res?.data;
+      return user;
+    } else {
+      // 没有 token 或者 token 无效 需要重新登录
+      localStorage.removeItem('token');
+      message.error('用户无效，请先登录');
+      location.href = '/login';
+    }
+  }
   return {
-    name: 'lbj',
+    name: '开发者',
     avatar:
       'https://p26-passport.byteacctimg.com/img/user-avatar/312989b46037c16843b1eb44aea82fa2~180x180.awebp?',
   };
@@ -45,10 +72,13 @@ export const layout: RunTimeLayoutConfig = ({ initialState }: any) => {
     menu: {
       locale: false,
     },
-    layout: 'mix',
-    splitMenus: true, // 这里用了mix才会生效
+    layout: 'top',
+    // splitMenus: true, // 这里用了mix才会生效
     avatarProps: {
-      src: initialState?.avatar || undefined, //右上角头像
+      src:
+        initialState?.avatar ||
+        'https://p26-passport.byteacctimg.com/img/user-avatar/312989b46037c16843b1eb44aea82fa2~180x180.awebp?' ||
+        undefined, //右上角头像
       title: initialState?.name || '用户', //右上角名称
       size: 'small',
       render: (props, defaultDom) => {
@@ -65,7 +95,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState }: any) => {
       },
     },
     headerContentRender: (props, defaultDom) => {
-      console.log('props--', props)
       return (
         <>
           {defaultDom}
@@ -74,8 +103,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }: any) => {
       );
     },
     onPageChange: (location) => {
-      const { currentUser } = initialState;
-      console.log('initialState--', initialState);
+      // const { currentUser } = initialState;
+      // console.log('initialState--', initialState);
     },
     // 自定义 403 页面
     unAccessible: <div>'403 unAccessible'</div>,
@@ -134,12 +163,13 @@ export const request: RequestConfig = {
     },
   ],
   responseInterceptors: [
-    (response: any) => {
-      const { data, message } = response;
-      if (!data.success) {
-        message.error(message);
-      }
-      return response;
-    },
+    // (response: any) => {
+    //   console.log('response--', response);
+    //   const { data, status, statusText } = response;
+    //   if (status !== 200) {
+    //     message.error(`${statusText}`);
+    //   }
+    //   return response;
+    // },
   ],
 };

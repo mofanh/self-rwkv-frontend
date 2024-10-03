@@ -17,5 +17,12 @@ export default defineConfig({
   routes,
   npmClient: 'npm',
   dva: {},
+  proxy: {
+    "/api": { // 标识需要进行转换的请求的url
+     "target": "http://localhost:3000/api/", // 服务端域名
+     "changeOrigin": true, // 允许域名进行转换
+    //  "pathRewrite": { "^/": 'api'}  // 将请求url里的ci去掉
+    }
+  },
 });
 
