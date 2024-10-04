@@ -11,6 +11,7 @@ import { Button, Divider, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
+import { getUsers } from '@/services/user/UserController';
 
 const { addUser, queryUserList, deleteUser, modifyUser } =
   services.UserController;
@@ -94,7 +95,6 @@ const TableList: React.FC<unknown> = () => {
     {
       title: '名称',
       dataIndex: 'name',
-      tip: '名称是唯一的 key',
       formItemProps: {
         rules: [
           {
@@ -105,17 +105,17 @@ const TableList: React.FC<unknown> = () => {
       },
     },
     {
-      title: '昵称',
-      dataIndex: 'nickName',
+      title: '邮箱',
+      dataIndex: 'email',
       valueType: 'text',
     },
     {
-      title: '性别',
-      dataIndex: 'gender',
+      title: '角色',
+      dataIndex: 'role',
       hideInForm: true,
       valueEnum: {
-        0: { text: '男', status: 'MALE' },
-        1: { text: '女', status: 'FEMALE' },
+        0: { text: '管理员', status: 'admin' },
+        1: { text: '用户', status: 'user' },
       },
     },
     {
@@ -162,16 +162,10 @@ const TableList: React.FC<unknown> = () => {
           </Button>,
         ]}
         request={async (params, sorter, filter) => {
-          const { data, success } = await queryUserList({
-            ...params,
-            // FIXME: remove @ts-ignore
-            // @ts-ignore
-            sorter,
-            filter,
-          });
+          const { users, status } = await getUsers();
           return {
-            data: data?.list || [],
-            success,
+            data: users || [],
+            status,
           };
         }}
         columns={columns}

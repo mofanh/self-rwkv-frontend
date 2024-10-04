@@ -12,3 +12,16 @@ export async function getMe(
     ...(options || {}),
   });
 }
+
+export async function getUsers(
+  params?: {},
+  options?: { [key: string]: any },
+) {
+  return request('http://localhost:3000/api/users/users', {
+    method: 'GET',
+    data: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
