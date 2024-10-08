@@ -1,23 +1,24 @@
-import { Col, Row } from 'antd';
+import { useEffect } from 'react';
+import { ChatHistoryMessage } from '../../type';
+import { InputAreaProps } from '../InputArea';
 import RobotItem from './components/RobotItem';
 import UserItem from './components/UserItem';
-import { InputAreaProps } from '../InputArea';
+import { ChatHistoryModel } from '../../model';
 
 interface ChatHistoryProps extends InputAreaProps {
-  history: string[];
+  chatHistory: ChatHistoryModel;
 }
 
 const ChatHistory = (props: ChatHistoryProps) => {
-  const { curInput, setCurInput, history } = props;
+  const { curInput, setCurInput, chatHistory } = props;
   return (
-    <>
-      <div>
-        <RobotItem />
-      </div>
-      <div>
-          <UserItem curInput={curInput} />
-      </div>
-    </>
+    <>{chatHistory.messages.map((message, index) => {
+      return message.senderRole === 'user' ? (
+        <UserItem key={index} content={message.content} />
+      ) : (
+        <RobotItem key={index} content={message.content} />
+      );
+    })}</>
   );
 };
 

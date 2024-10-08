@@ -3,15 +3,16 @@ import { Avatar, Flex } from 'antd';
 import MessageCard from '../MessageCard';
 import { useState } from 'react';
 
-const RobotItem = () => {
-    const [str, setStr] = useState('asdad');
-    // setInterval(()=>{
-    //     setStr(str+'1');
-    // }, 1000);
+interface RobotItemProps {
+  content: string;
+}
+
+const RobotItem = (props: RobotItemProps) => {
+  const { content } = props;
   return (
     <Flex>
       <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
-      <MessageCard msg={str} loading={true} />
+      <MessageCard msg={content} loading={true} />
     </Flex>
   );
 };

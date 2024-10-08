@@ -16,7 +16,7 @@ const routes = [
     component: './Access',
   },
   {
-    name: ' CRUD 示例',
+    name: '用户列表',
     path: '/table',
     component: './Table',
   },
