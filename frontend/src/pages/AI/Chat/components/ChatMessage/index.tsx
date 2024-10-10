@@ -2,6 +2,8 @@ import { CopyOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import { useMemo } from 'react';
 import ChatAvatar from './ChatAvatar';
+import assistentImg from '@/assets/houseAndGreen.jpg'
+import userImg from '@/assets/logo-my.jpg'
 import styles from './index.less';
 
 const dropdownItems = [
@@ -54,7 +56,7 @@ function ChatMessage(props: ChatMessageProps) {
         return (
           <ChatAvatar
             isShow={position === 'left'}
-            icon={'bot url'}
+            icon={assistentImg}
             style={{ marginRight: 8 }}
           />
         );
@@ -77,7 +79,7 @@ function ChatMessage(props: ChatMessageProps) {
         return (
           <ChatAvatar
             isShow={position === 'right'}
-            icon={'user url'}
+            icon={userImg}
             style={{ marginLeft: 8 }}
           />
         );
