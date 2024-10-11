@@ -1,45 +1,68 @@
-import { Button, Card, Input } from 'antd';
-import React, { useRef } from 'react';
+import { connect } from '@umijs/max';
+import { Card, Input } from 'antd';
+import { Component } from 'react';
 import styles from './index.less';
 
 const { TextArea } = Input;
 
 export interface InputAreaProps {
-  curInput: any,
-  setCurInput: (value: string) => void,
-  chatHistory:any,
+  curInput: any;
+  setCurInput: (value: string) => void;
+  chatHistory: any;
 }
 
-const InputArea = (props: InputAreaProps) => {
-  const { curInput, setCurInput, chatHistory } = props;
-
-  const handleMessageChange = (event: any) => {
-    setCurInput(event.target.value);
-  };
-
-  chatHistory.addUserMessage('456564645');
-  chatHistory.addUserMessage('数据的反馈和会计师');
-
-  const handleMessageSubmit = (event: any) => {
-    event.preventDefault();
-    chatHistory.addUserMessage('Hello! I am here to assist you');
-    event.target.value = ''
-    setCurInput('');
+@connect(({ chatStore }) => ({
+  chatStore,
+}))
+class InputArea extends Component {
+  chatStore: any;
+  dispatch: ({}) => void;
+  state: { input: string };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      input: '',
+    };
+    console.log('InputArea--', props);
+    const { chatStore, dispatch } = props;
+    this.chatStore = chatStore;
+    this.dispatch = dispatch;
+    this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
   }
 
+  async handleMessageSubmit(event: any) {
+    console.log('InputArea--', event.target.value);
+    // console.log('this.dispatch--', this.dispatch)
+    await this.dispatch({
+      type: 'chatStore/addUserCtx',
+      payload: {
+        senderRole: 'user',
+        content: event.target.value,
+      },
+    });
 
+    this.setState({ input: '' });
+    event.preventDefault();
+  }
 
-  console.log('chatHistory--', chatHistory)
-
-  return (
-  <>
-    <Card className={styles.container}>
-      <TextArea rows={3} value={curInput} onChange={handleMessageChange} disabled={false} onPressEnter={handleMessageSubmit}/>
-      <Button onClick={() => {
-        chatHistory.addUserMessage('Hello! I am here to assist you');
-      }}>button</Button>
-    </Card>
-  </>
-)};
+  render() {
+    return (
+      <>
+        <Card className={styles.container}>
+          <TextArea
+            rows={3}
+            value={this.state.input}
+            onChange={(e) => {
+              this.setState({ input: e.target.value });
+            }}
+            disabled={false}
+            onPressEnter={this.handleMessageSubmit}
+            allowClear
+          />
+        </Card>
+      </>
+    );
+  }
+}
 
 export default InputArea;
