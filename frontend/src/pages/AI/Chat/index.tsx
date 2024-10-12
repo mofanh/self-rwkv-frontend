@@ -2,44 +2,61 @@ import { Component } from 'react';
 import { connect } from 'umi';
 import InputArea from './components/InputArea';
 import styles from './index.less'
+import ChatMessage from './components/ChatMessage';
+import { timestamp2string } from './utils';
+import { xfSparkRequest } from '@/services/ai/http/xfSparkrController';
+
+xfSparkRequest({
+  model: "spark4.0",
+  user: "12346",
+  messages: [
+        {
+          role: "system",
+          content: "你是知识渊博的助理"
+        },
+        {
+          role: "user",
+          content: "你好，讯飞星火"
+        }
+    ],
+});
 
 @connect(({ chatStore }) => ({
   chatStore,
 }))
 class Chat extends Component {
-  constructor(props: {}) {
+  chatStore: any;
+  dispatch: ({}) => void;
+  constructor(props: { chatStore?: any; dispatch?: any; }) {
     super(props);
-    console.log(`Chat--`, props);
+    const { chatStore, dispatch } = props;
+    this.chatStore = chatStore;
+    this.dispatch = dispatch;
+    dispatch({
+      type: 'chatStore/init',
+      payload: 'hello world',
+    });
   }
   render() {
-    console.log(`Chat1--`, this.props);
-
+    console.log('this.props--', this.props)
     return (
       <>
-        {/* <Card className={styles.container}>
-        <ChatHistory
-          curInput={curInput}
-          setCurInput={setCurInput}
-          chatHistory={chatHistory}
-        />
-      </Card> */}
-        {/* {chatHistory.getMessages()?.map((msg, index) => {
-        console.log('msg--', msg)
-        const {senderRole, content} = msg;
-        return (
-          <ChatMessage
-            key={index}
-            position={senderRole === 'assistent' ? 'left' : 'right'}
-            content={content}
-            status="pass"
-            time="12:34 PM"
-          />
-        );
-      })} */}
-      
-      <div className={styles.inputContainer}>
-        <InputArea/>
-      </div>
+        {this.chatStore.chats?.map((msg, index) => {
+          const { senderRole, content, time } = msg;
+          return (
+            <ChatMessage
+              key={index}
+              position={senderRole === 'user' ? 'right' : 'left'}
+              content={content}
+              status="pass"
+              time={timestamp2string(time)}
+            />
+          );
+        })}
+
+        <div className={styles.inputContainer}>
+          <InputArea />
+        </div>
       </>
     );
   }

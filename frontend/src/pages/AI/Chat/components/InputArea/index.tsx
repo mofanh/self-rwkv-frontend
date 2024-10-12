@@ -23,23 +23,24 @@ class InputArea extends Component {
     this.state = {
       input: '',
     };
-    console.log('InputArea--', props);
     const { chatStore, dispatch } = props;
     this.chatStore = chatStore;
     this.dispatch = dispatch;
     this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
   }
 
-  async handleMessageSubmit(event: any) {
-    console.log('InputArea--', event.target.value);
-    // console.log('this.dispatch--', this.dispatch)
+  async addUserCtx(context: string) {
     await this.dispatch({
-      type: 'chatStore/addUserCtx',
+      type: 'chatStore/addCtx',
       payload: {
         senderRole: 'user',
-        content: event.target.value,
+        content: this.state.input,
       },
     });
+  }
+
+  async handleMessageSubmit(event: any) {
+    await this.addUserCtx(event.target.value);
 
     this.setState({ input: '' });
     event.preventDefault();
