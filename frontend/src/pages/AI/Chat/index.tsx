@@ -1,24 +1,26 @@
+import { xfSparkRequest } from '@/services/ai/http/xfSparkrController';
 import { Component } from 'react';
 import { connect } from 'umi';
-import InputArea from './components/InputArea';
-import styles from './index.less'
 import ChatMessage from './components/ChatMessage';
+import InputArea from './components/InputArea';
+import styles from './index.less';
 import { timestamp2string } from './utils';
-import { xfSparkRequest } from '@/services/ai/http/xfSparkrController';
 
 xfSparkRequest({
-  model: "spark4.0",
-  user: "12346",
-  messages: [
-        {
-          role: "system",
-          content: "你是知识渊博的助理"
-        },
-        {
-          role: "user",
-          content: "你好，讯飞星火"
-        }
-    ],
+  "max_tokens": 4096,
+  "top_k": 4,
+  "temperature": 0.5,
+  "messages": [
+      {
+          "role": "system",
+          "content": ""
+      },
+      {
+          "role": "user",
+          "content": "写一个js代码"
+      }
+  ],
+  "model": "4.0Ultra"
 });
 
 @connect(({ chatStore }) => ({
@@ -27,7 +29,7 @@ xfSparkRequest({
 class Chat extends Component {
   chatStore: any;
   dispatch: ({}) => void;
-  constructor(props: { chatStore?: any; dispatch?: any; }) {
+  constructor(props: { chatStore?: any; dispatch?: any }) {
     super(props);
     const { chatStore, dispatch } = props;
     this.chatStore = chatStore;
@@ -38,7 +40,6 @@ class Chat extends Component {
     });
   }
   render() {
-    console.log('this.props--', this.props)
     return (
       <>
         {this.chatStore.chats?.map((msg, index) => {

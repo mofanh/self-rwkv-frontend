@@ -9,7 +9,7 @@ export async function login(
   },
   options?: { [key: string]: any },
 ) {
-  return request('http://localhost:3000/api/auth/login', {
+  return request('/v1/api/auth/login', {
     method: 'POST',
     data: {
       ...params,
@@ -27,7 +27,7 @@ export async function register(
   },
   options?: { [key: string]: any },
 ) {
-  return request('http://localhost:3000/api/auth/login', {
+  return request('/v1/api/auth/login', {
     method: 'POST',
     data: {
       ...params,
