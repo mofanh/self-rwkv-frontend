@@ -137,7 +137,7 @@ export const antd: RuntimeAntdConfig = (memo) => {
 };
 
 export const request: RequestConfig = {
-  timeout: 1000,
+  timeout: 10000,
   errorConfig: {
     errorHandler(error: any) {
       const { response } = error;

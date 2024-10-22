@@ -6,23 +6,6 @@ import InputArea from './components/InputArea';
 import styles from './index.less';
 import { timestamp2string } from './utils';
 
-xfSparkRequest({
-  "max_tokens": 4096,
-  "top_k": 4,
-  "temperature": 0.5,
-  "messages": [
-      {
-          "role": "system",
-          "content": ""
-      },
-      {
-          "role": "user",
-          "content": "写一个js代码"
-      }
-  ],
-  "model": "4.0Ultra"
-});
-
 @connect(({ chatStore }) => ({
   chatStore,
 }))

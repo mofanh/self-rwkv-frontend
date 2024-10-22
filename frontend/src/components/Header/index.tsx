@@ -14,7 +14,7 @@ const Header = () => {
         algorithm: [curTheme == 'black' ? darkAlgorithm : defaultAlgorithm],
       },
     });
-  }, curTheme);
+  }, [curTheme]);
   return (
     <Switch
       checkedChildren={<MoonOutlined />}

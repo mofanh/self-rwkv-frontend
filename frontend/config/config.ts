@@ -23,16 +23,16 @@ export default defineConfig({
       'changeOrigin': true,
       'pathRewrite': { '^/v1' : '' },
     },
-    "spark": {
-      'target': 'https://spark-api-open.xf-yun.com/v1',
-      // 'changeOrigin': true,
-      'pathRewrite': { '^/spark': '' },
+    '/spark': {
+      target: 'https://spark-api-open.xf-yun.com/v1',
+      changeOrigin: true,
+      pathRewrite: { '^/spark': '' },
     },
   },
-  // https: {
-  //   cert:'./httpCert/server.crt',
-  //   key:'./httpCert/server.key'
-  // },
+  https: {
+    cert:'./httpCert/server.crt',
+    key:'./httpCert/server.key'
+  },
 
 });
 

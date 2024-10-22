@@ -2,6 +2,7 @@ import { connect } from '@umijs/max';
 import { Card, Input } from 'antd';
 import { Component } from 'react';
 import styles from './index.less';
+import { xfSparkRequest } from '@/services/ai/http/xfSparkrController';
 
 const { TextArea } = Input;
 
@@ -29,7 +30,7 @@ class InputArea extends Component {
     this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
   }
 
-  async addUserCtx(context: string) {
+  async addUserCtx(content: string) {
     await this.dispatch({
       type: 'chatStore/addCtx',
       payload: {
@@ -39,11 +40,42 @@ class InputArea extends Component {
     });
   }
 
+  async addAssistantCtx(content: string) {
+    await this.dispatch({
+      type: 'chatStore/addCtx',
+      payload: {
+        senderRole: 'assistant',
+        content: content,
+      },
+    });
+  }
+
   async handleMessageSubmit(event: any) {
     await this.addUserCtx(event.target.value);
 
     this.setState({ input: '' });
     event.preventDefault();
+
+    xfSparkRequest({
+      "max_tokens": 4096,
+      "top_k": 4,
+      "temperature": 0.5,
+      "messages": [
+          {
+              "role": "system",
+              "content": ""
+          },
+          {
+              "role": "user",
+              "content": this.state.input,
+          }
+      ],
+      "model": "4.0Ultra",
+      // "stream": true,
+    }
+  ).then((res) => {
+      this.addAssistantCtx(res?.choices[0].message.content);
+    });
   }
 
   render() {

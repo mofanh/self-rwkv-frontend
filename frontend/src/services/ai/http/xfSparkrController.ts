@@ -13,7 +13,9 @@ export async function xfSparkRequest(
       'Content-Type': 'application/json',
       'Authorization': 'Bearer nPLgqzEHEtEjZcnsDKdS:mZIvrDDeVfZRpYejdKau'
     },
-    data: params,
+    data: {
+      ...params,
+    },
     ...(options || {}),
   });
 }
