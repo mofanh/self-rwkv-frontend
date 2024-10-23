@@ -1,9 +1,10 @@
 import { CopyOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import ChatAvatar from './ChatAvatar';
 import assistentImg from '@/assets/houseAndGreen.jpg'
 import userImg from '@/assets/logo-my.jpg'
+import MarkdownIt from 'markdown-it'
 import styles from './index.less';
 
 const dropdownItems = [
@@ -45,6 +46,47 @@ function ChatMessage(props: ChatMessageProps) {
     onDelChatMessage,
     onRefurbishChatMessage,
   } = props;
+
+  const markdownBodyRef = useRef<HTMLDivElement>(null)
+
+  function highlightBlock(str: string, lang: string, code: string) {
+    return `<pre class="code-block-wrapper"><div class="code-block-header"><span class="code-block-header__lang">${lang}</span><span class="code-block-header__copy">复制代码</span></div><code class="hljs code-block-body ${lang}">${str}</code></pre>`
+  }
+
+  const mdi = new MarkdownIt({
+    html: true,
+    linkify: true,
+    // highlight(code, language) {
+    //   const validLang = !!(language && hljs.getLanguage(language))
+    //   if (validLang) {
+    //     const lang = language ?? ''
+    //     return highlightBlock(hljs.highlight(code, { language: lang }).value, lang, code)
+    //   }
+    //   return highlightBlock(hljs.highlightAuto(code).value, '', code)
+    // }
+  })
+
+  const renderText = useMemo(() => {
+    const value = content || ''
+    if (position === 'right') {
+      return (
+        <div ref={markdownBodyRef} className="markdown-body">
+          {value}
+        </div>
+      )
+    }
+    const renderMdHtml = mdi.render(value)
+    return (
+      <div
+        ref={markdownBodyRef}
+        className="markdown-body"
+        dangerouslySetInnerHTML={{
+          __html: renderMdHtml
+        }}
+      />
+    )
+  }, [content, position])
+
   return (
     <div
       className={styles.messageContainer}
@@ -73,7 +115,7 @@ function ChatMessage(props: ChatMessageProps) {
           {time}
         </span>
         {/* {pluginInfo && <PluginCard {...pluginInfo} />} */}
-        <div>{status === 'loading' ? <Spin /> : content}</div>
+        <div>{status === 'loading' ? <Spin /> : renderText}</div>
       </div>
       {useMemo(() => {
         return (

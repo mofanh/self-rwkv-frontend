@@ -1,4 +1,3 @@
-import { xfSparkRequest } from '@/services/ai/http/xfSparkrController';
 import { Component } from 'react';
 import { connect } from 'umi';
 import ChatMessage from './components/ChatMessage';
@@ -24,24 +23,25 @@ class Chat extends Component {
   }
   render() {
     return (
-      <>
-        {this.chatStore.chats?.map((msg, index) => {
-          const { senderRole, content, time } = msg;
-          return (
-            <ChatMessage
-              key={index}
-              position={senderRole === 'user' ? 'right' : 'left'}
-              content={content}
-              status="pass"
-              time={timestamp2string(time)}
-            />
-          );
-        })}
-
+      <div className={styles.container}>
+        <div className={styles.chatContainer}>
+          {this.chatStore.chats?.map((msg, index) => {
+            const { senderRole, content, time } = msg;
+            return (
+              <ChatMessage
+                key={index}
+                position={senderRole === 'user' ? 'right' : 'left'}
+                content={content}
+                status="pass"
+                time={timestamp2string(time)}
+              />
+            );
+          })}
+        </div>
         <div className={styles.inputContainer}>
           <InputArea />
         </div>
-      </>
+      </div>
     );
   }
 }

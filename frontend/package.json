@@ -15,7 +15,8 @@
     "@ant-design/pro-components": "^2.4.4",
     "@umijs/max": "^4.3.20",
     "@xyflow/react": "^12.3.0",
-    "antd": "^5.4.0"
+    "antd": "^5.4.0",
+    "markdown-it": "^14.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",
