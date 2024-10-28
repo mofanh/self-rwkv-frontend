@@ -19,9 +19,9 @@ export default defineConfig({
   dva: {},
   proxy: {
     '/v1': {
-      'target': 'http://localhost:3000/',
-      'changeOrigin': true,
-      'pathRewrite': { '^/v1' : '' },
+      target: 'http://localhost:3000/',
+      changeOrigin: true,
+      pathRewrite: { '^/v1': '' },
     },
     '/spark': {
       target: 'https://spark-api-open.xf-yun.com/v1',
@@ -30,9 +30,7 @@ export default defineConfig({
     },
   },
   https: {
-    cert:'./httpCert/server.crt',
-    key:'./httpCert/server.key'
+    cert: './httpCert/server.crt',
+    key: './httpCert/server.key',
   },
-
 });
-

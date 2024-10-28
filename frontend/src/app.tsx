@@ -15,7 +15,7 @@ export async function getInitialState(): Promise<{
   avatar?: string;
 }> {
   if (location.pathname === '/login') {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     if (token) {
       const user = await getMe();
       if (user?.data) {
@@ -25,7 +25,7 @@ export async function getInitialState(): Promise<{
     }
   } else {
     const res = await getMe().catch(() => {
-      localStorage.removeItem('token');
+      localStorage.removeItem('authToken');
       message.error('用户无效，请先登录');
       location.href = '/login';
     });
@@ -36,7 +36,7 @@ export async function getInitialState(): Promise<{
       return user;
     } else {
       // 没有 token 或者 token 无效 需要重新登录
-      localStorage.removeItem('token');
+      localStorage.removeItem('authToken');
       message.error('用户无效，请先登录');
       location.href = '/login';
     }
@@ -72,8 +72,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }: any) => {
     menu: {
       locale: false,
     },
-    layout: 'top',
-    // splitMenus: true, // 这里用了mix才会生效
+    layout: 'mix',
+    splitMenus: true, // 这里用了mix才会生效
     avatarProps: {
       src:
         initialState?.avatar ||
@@ -102,14 +102,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState }: any) => {
         </>
       );
     },
-    onPageChange: (location) => {
-      // const { currentUser } = initialState;
-      // console.log('initialState--', initialState);
-    },
+    // onPageChange: (location) => {
+    //   // const { currentUser } = initialState;
+    //   // console.log('initialState--', initialState);
+    // },
     // 自定义 403 页面
-    unAccessible: <div>'403 unAccessible'</div>,
+    unAccessible: <div>403 unAccessible</div>,
     // 自定义 404 页面
-    noFound: <div>'404 noFound'</div>,
+    noFound: <div>404 noFound</div>,
   };
 };
 
@@ -137,7 +137,7 @@ export const antd: RuntimeAntdConfig = (memo) => {
 };
 
 export const request: RequestConfig = {
-  timeout: 10000,
+  timeout: 100000,
   errorConfig: {
     errorHandler(error: any) {
       const { response } = error;
@@ -149,7 +149,7 @@ export const request: RequestConfig = {
   },
   requestInterceptors: [
     (config: any) => {
-      let token = localStorage.getItem('token') || '';
+      let token = localStorage.getItem('authToken') || '';
       if (token.startsWith('"')) {
         token = JSON.parse(token);
       }
