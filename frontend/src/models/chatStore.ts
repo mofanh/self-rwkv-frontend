@@ -1,3 +1,7 @@
+import { queryChatBot } from "@/pages/AI/Chat/utils";
+import { xfSparkRequest } from "@/services/ai/http/xfSparkrController";
+import { useRequest } from "@umijs/max";
+
 interface ChatStoreAbstract {
   state: ChatState,
   effects: {},
@@ -13,7 +17,9 @@ interface ChatsInfo {
   senderRole: 'system' | 'assistent' | 'user',
   context: string,
   time: number,
+  status: 'pass' | 'loading' | 'error' | string;
 }
+
 
 // 同步更新 state 的 reducers，处理异步逻辑的 effects，订阅数据源的 subscriptions
 const chatStore: ChatStoreAbstract = {
@@ -23,9 +29,12 @@ const chatStore: ChatStoreAbstract = {
   },
 
   effects: {
-    *queryUser({ payload }, { call, put }) {
-      const { data } = yield call(queryUser, payload);
-      yield put({ type: 'queryUserSuccess', payload: data });
+    *queryNextChat({ payload }, { call, put }) {
+      // const res = useRequest(queryChatBot)
+      // console.log('res--', res)
+      const data = yield call(queryChatBot);
+      console.log('data--', data)
+      // yield put({ type: 'queryUserSuccess', payload: data });
     },
   },
 

@@ -1,6 +1,7 @@
 /* eslint-disable */
 // 该文件由 OneAPI 自动生成，请勿手动修改！
 import { request } from '@umijs/max';
+console.log(process.env)
 
 /** 星火大模型API POST https://spark-api-open.xf-yun.com/v1/chat/completions */
 export async function xfSparkRequest(
@@ -9,6 +10,7 @@ export async function xfSparkRequest(
 ) {
   return request<chatAPI.xfSparkRequestInfo>('/spark/chat/completions', {
     method: 'POST',
+    timeout: 100000,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer nPLgqzEHEtEjZcnsDKdS:mZIvrDDeVfZRpYejdKau'

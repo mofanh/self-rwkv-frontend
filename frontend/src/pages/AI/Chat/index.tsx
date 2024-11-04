@@ -20,6 +20,10 @@ class Chat extends Component {
       type: 'chatStore/init',
       payload: 'hello world',
     });
+    dispatch({
+      type: 'chatStore/queryNextChat',
+      payload: 'hello world',
+    });
   }
   render() {
     return (

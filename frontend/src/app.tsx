@@ -137,7 +137,7 @@ export const antd: RuntimeAntdConfig = (memo) => {
 };
 
 export const request: RequestConfig = {
-  timeout: 100000,
+  timeout: 2000,
   errorConfig: {
     errorHandler(error: any) {
       const { response } = error;
@@ -150,11 +150,23 @@ export const request: RequestConfig = {
   requestInterceptors: [
     (config: any) => {
       let token = localStorage.getItem('authToken') || '';
+      const urlHeader = config.url.split('/').filter(i => i !== '')[0] || ''
       if (token.startsWith('"')) {
         token = JSON.parse(token);
       }
       if (token) {
-        config.headers.Authorization = 'Bearer ' + token;
+        switch(urlHeader){
+          // case 'spark':
+          //   config.headers.Authorization = 'Bearer ' + process.env.SPARK_KEY;
+          //   console.log('config.headers.Authorization--', process.env)
+          //   break;
+          case 'v1':
+            config.headers.Authorization = 'Bearer ' + token;
+            break;
+          // default:
+          //   config.headers.Authorization = 'Bearer ' + token;
+          //   break;
+        }
       }
       return config;
     },

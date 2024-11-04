@@ -1,11 +1,12 @@
 import { CopyOutlined, DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import ChatAvatar from './ChatAvatar';
 import assistentImg from '@/assets/houseAndGreen.jpg'
 import userImg from '@/assets/logo-my.jpg'
 import MarkdownIt from 'markdown-it'
 import styles from './index.less';
+import { request, useRequest } from '@umijs/max';
 
 const dropdownItems = [
   {
